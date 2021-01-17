@@ -1,4 +1,5 @@
 import pygame
+import copy
 
 
 def main():
@@ -27,7 +28,6 @@ def main():
     # set fonts
     title_font = pygame.font.SysFont("calibri", 60)
     grid_font = pygame.font.SysFont("calibri", 50)
-    grid_small_font = pygame.font.SysFont("calibri", 20)
 
     # set keys
     NUMBER_KEYS = [pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4,
@@ -74,11 +74,9 @@ def main():
     draw(sudoku, curr_sudoku, solved_sudoku,       surface, select_box)
 
     # -----PLAY GAME-----
-    # define control loop variable
-    running = True
 
     # main loop
-    while running:
+    while(check_win(curr_sudoku, solved_sudoku)):
 
         for event in pygame.event.get():
 
@@ -87,7 +85,7 @@ def main():
                     # solve sudoku
                     solve = 1
                 if event.key in NUMBER_KEYS and select_box != [None, None]:
-                    enter_value(curr_sudoku, NUMBER_KEYS.index(event.key), select_box)
+                    enter_value(curr_sudoku, sudoku, NUMBER_KEYS.index(event.key), select_box)
                     select_box = [None, None]
                 if event.key == pygame.K_r:
                     curr_sudoku = reset_sudoku(curr_sudoku, sudoku)
@@ -100,9 +98,14 @@ def main():
                 select_box = move_select(event.pos, select_box)
 
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                quit()
 
         draw(sudoku, curr_sudoku, solved_sudoku,       surface, select_box)
+
+    (text_width, text_height) = title_font.size("Victory!")
+    surface.blit(title_font.render("Victory!", 1, black),
+                 (SURFACE_SIZE - (text_width/2), SURFACE_SIZE - (text_height/2)))
 
 
     #-----SOLVE-----
@@ -153,18 +156,11 @@ def draw_grid_features(sudoku, curr_sudoku, solved_sudoku,       surface, select
         for col in range(9):  # defined size 9
             # draw values
             if (sudoku[row][col] != 0):
-                '''
-                (text_width, text_height) = grid_font.size(str(sudoku[row][col]))
-                surface.blit(grid_font.render(str(sudoku[row][col]), 1, black),
-                             (BOX_LENGTH*col + (25), BOX_LENGTH*row + 16))
-                '''
+                # draw original sudoku value
                 draw_value(row, col, black,     surface, sudoku)
+
             elif (curr_sudoku[row][col] != 0):
-                '''
-                (text_width, text_height) = grid_font.size(str(curr_sudoku[row][col]))
-                surface.blit(grid_font.render(str(curr_sudoku[row][col]), 1, grey),
-                             (BOX_LENGTH*col + (25), BOX_LENGTH*row + 16))
-                '''
+                # draw current sudoku value
                 draw_value(row, col, grey,     surface, curr_sudoku)
 
             if (curr_sudoku[row][col] != solved_sudoku[row][col] and curr_sudoku[row][col] != 0):
@@ -199,19 +195,24 @@ def move_select(position, select_position):
     return select_position
 
 
-def enter_value(curr_sudoku, key, position):
-    curr_sudoku[position[0]][position[1]] = key
+def enter_value(curr_sudoku, sudoku, key, position):
+    if sudoku[position[0]][position[1]] == 0:
+        curr_sudoku[position[0]][position[1]] = key
     return curr_sudoku
 
 
 def reset_sudoku(curr_sudoku, sudoku):
-    curr_sudoku = sudoku
+    curr_sudoku = copy.deepcopy(sudoku)
     return curr_sudoku
 
 
 def new_sudoku(curr_sudoku, sudoku):
     # TODO get new sudoku
     return curr_sudoku, sudoku
+
+
+def check_win(curr_sudoku, solved_sudoku):
+    return curr_sudoku != solved_sudoku
 
 
 if __name__ == "__main__":
