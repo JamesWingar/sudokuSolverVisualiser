@@ -2,10 +2,11 @@
 # Python class to store and solve a Sudoku, input as a string with empty grid #
 # *************************************************************************** #
 import sys
+import copy
 
 
 class Sudoku:
-    """# This class to store and solve a Sudoku.
+    """ This class to store and solve a Sudoku.
     Input parameter: String Sudoku with empty squares as 0 or . (Length === 81)
     Contains follow member methods:
         create_grid(s): Returns 9x9 list from input string
@@ -23,16 +24,16 @@ class Sudoku:
     """
 
     def __init__(self, sudoku_string):
-        self.string = sudoku_string
-        self.sudoku = self.create_grid(sudoku_string)
+        self.string = "".join(sudoku_string.split())
+        self.sudoku = self.create_grid(self.string)
         self.solution = []
 
     def create_grid(self, string):
-        string = "".join(string.split())
         grid = []
         count = 0
 
         if len(string) != 81:  # ensure 9x9 size for sudoku
+            print(len(string))
             sys.stderr.write("Error: String passed was incorrect length for Sudoku class. \
 Use '0' or '.' to represent empty values, length must equal 81\n")
             return False
@@ -116,7 +117,7 @@ Use '0' or '.' to represent empty values, length must equal 81\n")
         return False
 
     def solve(self):
-        self.solution = self.sudoku
+        self.solution = copy.deepcopy(self.sudoku)
         self.sudoku_solver(self.solution, 0, 0)
         return self.solution
 
