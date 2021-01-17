@@ -61,6 +61,16 @@ def main():
                    [0, 3, 0, 0, 0, 0, 5, 0, 0],
                    [5, 0, 0, 0, 6, 2, 0, 0, 8]]
 
+    algo_sudoku = [[8, 0, 0, 9, 3, 0, 0, 0, 2],
+                   [0, 0, 9, 0, 0, 0, 0, 4, 0],
+                   [7, 0, 2, 1, 0, 0, 9, 6, 0],
+                   [2, 0, 0, 0, 0, 0, 0, 9, 0],
+                   [0, 6, 0, 0, 0, 0, 0, 7, 0],
+                   [0, 7, 0, 0, 0, 6, 0, 0, 5],
+                   [0, 2, 7, 0, 0, 8, 4, 0, 6],
+                   [0, 3, 0, 0, 0, 0, 5, 0, 0],
+                   [5, 0, 0, 0, 6, 2, 0, 0, 8]]
+
     solved_sudoku = [[8, 4, 6, 9, 3, 7, 1, 5, 2],
                      [3, 1, 9, 6, 2, 5, 8, 4, 7],
                      [7, 5, 2, 1, 8, 4, 9, 6, 3],
@@ -71,7 +81,7 @@ def main():
                      [6, 3, 8, 4, 7, 1, 5, 2, 9],
                      [5, 9, 4, 3, 6, 2, 7, 1, 8]]
 
-    draw(sudoku, curr_sudoku, solved_sudoku,       surface, select_box)
+    draw(sudoku, curr_sudoku, grey, solved_sudoku,       surface, select_box)
 
     # -----PLAY GAME-----
 
@@ -82,8 +92,7 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    # solve sudoku
-                    solve = 1
+                    curr_sudoku = solve(sudoku, curr_sudoku)
                 if event.key in NUMBER_KEYS and select_box != [None, None]:
                     enter_value(curr_sudoku, sudoku, NUMBER_KEYS.index(event.key), select_box)
                     select_box = [None, None]
@@ -101,21 +110,78 @@ def main():
                 pygame.quit()
                 quit()
 
-        draw(sudoku, curr_sudoku, solved_sudoku,       surface, select_box)
+        draw(sudoku, curr_sudoku, grey, solved_sudoku,      surface, select_box)
 
     (text_width, text_height) = title_font.size("Victory!")
     surface.blit(title_font.render("Victory!", 1, black),
                  (SURFACE_SIZE - (text_width/2), SURFACE_SIZE - (text_height/2)))
 
 
-    #-----SOLVE-----
+def solve(sudoku, curr_sudoku):
+    curr_sudoku = copy.deepcopy(sudoku)
+    sudoku_solver(curr_sudoku, 0, 0)
+    return curr_sudoku
 
-def draw(sudoku, curr_sudoku, solved_sudoku,       surface, select_box):
+
+def sudoku_solver(sudoku, row, column):
+    if row > len(sudoku) - 1:  # end condition
+        return True
+
+    # skip to next box if already filled
+    if sudoku[row][column] != 0:
+        if column < len(sudoku) - 1:
+            if sudoku_solver(sudoku, row, column+1):
+                return True
+        else:
+            if sudoku_solver(sudoku, row+1, 0):
+                return True
+        return False
+
+    # check empty box for valid values
+    for value in range(1, 10):
+        #draw(sudoku, curr_sudoku, entry_colour, solved_sudoku,       surface, select_box)
+        if check_valid_lines(sudoku, value, row, column) and \
+                check_valid_box(sudoku, value, row, column):
+            sudoku[row][column] = value
+            if column < len(sudoku) - 1:
+                if sudoku_solver(sudoku, row, column+1):
+                    return True
+            else:
+                if sudoku_solver(sudoku, row+1, 0):
+                    return True
+
+    # remove previous answer from board
+    sudoku[row][column] = 0
+    return False
+
+
+def check_valid_lines(sudoku, value, row, column):
+
+    for index in range(len(sudoku)):
+        if sudoku[row][index] == value or sudoku[index][column] == value:
+            return False
+
+    return True
+
+
+def check_valid_box(sudoku, value, row, column):
+    y_min = row//3 * 3
+    x_min = column//3 * 3
+
+    for y in range(y_min, y_min+2):
+        for x in range(x_min, x_min+2):
+            if sudoku[y][x] == value:
+                return False
+
+    return True
+
+
+def draw(sudoku, curr_sudoku, entry_colour, solved_sudoku,       surface, select_box):
     background = pygame.Color(220, 220, 220)  # # ---------- REMOVE
 
     surface.fill(background)
     draw_grid(surface)
-    draw_grid_features(sudoku, curr_sudoku, solved_sudoku,       surface, select_box)
+    draw_grid_features(sudoku, curr_sudoku, entry_colour, solved_sudoku,      surface, select_box)
 
     pygame.display.update()
 
@@ -141,7 +207,7 @@ def draw_grid(surface):
     pygame.draw.line(surface, black, (0, line_pos), (SURFACE_SIZE, line_pos), 2*line_width)  # y boundary line
 
 
-def draw_grid_features(sudoku, curr_sudoku, solved_sudoku,       surface, select_box):
+def draw_grid_features(sudoku, curr_sudoku, entry_colour, solved_sudoku,       surface, select_box):
     BOX_LENGTH = 675/9  # # ---------- REMOVE
     black = pygame.Color(0, 0, 0, 0)  # # ---------- REMOVE
     grey = pygame.Color(120, 120, 120, 0)  # # ---------- REMOVE
@@ -161,7 +227,7 @@ def draw_grid_features(sudoku, curr_sudoku, solved_sudoku,       surface, select
 
             elif (curr_sudoku[row][col] != 0):
                 # draw current sudoku value
-                draw_value(row, col, grey,     surface, curr_sudoku)
+                draw_value(row, col, entry_colour,     surface, curr_sudoku)
 
             if (curr_sudoku[row][col] != solved_sudoku[row][col] and curr_sudoku[row][col] != 0):
                 # draw incorrect box
