@@ -35,8 +35,8 @@ pip install -r requirements.txt
 * Press space, escape, enter or backspace to exit when complete
 
 ## Sudoku.py
-Class to store and solve a Sudoku.
-Input parameter: String Sudoku with empty squares as 0 or . (Length === 81)
+Class to store and solve a Sudoku.  
+Input parameter: String Sudoku with empty squares as 0 or . (Length === 81)  
 Contains follow member methods:
 * create_grid(s): Returns 9x9 list from input string
 * create_string(): Return string from 9x9 solved sudoku
