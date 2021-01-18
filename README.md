@@ -37,8 +37,9 @@ pip install -r requirements.txt
 ## Sudoku.py
 Class to store and solve a Sudoku.  
 Input parameter:  
-* String Sudoku with empty squares as 0 or . (Length === 81)
+* String Sudoku with empty squares as 0 or . (Length === 81)  
 Contains follow member methods:  
+
 * create_grid(s): Returns 9x9 list from input string
 * create_string(): Return string from 9x9 solved sudoku
 * print_solution_string(): Returns solution as a string
@@ -53,8 +54,9 @@ Contains follow member methods:
 Class to display a pygame GUI for the backtracking Sudoku solver algorithm that you can play and automate (Brute forces)  
 Input parameter:  
 * Base Sudoku puzzle multi-dimensional list  
-* Solved sudoku multi-dimensional list
-Contains follow member methods:  
+* Solved sudoku multi-dimensional list  
+
+Contains follow member methods:   
 * run(): Main (while) loop to run the Draw, Input and Solve of the program   
 * solve(): Starts and returns the resursive/backtracking solution  
 * sudoku_solver(list, int, int): Recursively called function get soduku solution
