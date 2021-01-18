@@ -17,22 +17,34 @@ EXIT_KEYS = [pygame.K_SPACE, pygame.K_ESCAPE,
 
 
 class Sudoku_solver:
-    """ This class produces a pygame GUI for the backtracking
+    """ This class to display a pygame GUI for the backtracking
     Sudoku solver algorithm that you can play and automate (Brute forces)
-    Input parameter: 
+    Usage: - Select a box and enter a number key to add value to the box
+           - Enter 0 to remove the value
+           - Press R to reset the Sudoku
+           - Press space to start the backtracking algorithm
+           - Press space, escape, enter or backspace to exit when complete
+    Input parameter: - Base Sudoku puzzle multi-dimensional list
+                     - Solved sudoku multi-dimensional list
     Contains follow member methods:
-        create_grid(s): Returns 9x9 list from input string
-        create_string(): Return string from 9x9 solved sudoku
-        print_solution_string(): Returns solution as a string
+        run(): Main loop to run the Draw, Input and Solve of the program
+        solve(): Starts and returns the resursive/backtracking solution
+        sudoku_solver(list, int, int): Recursively called function get
+            soduku solution
         check_valid_lines(list, int, int, int): Returns if value in row and
             column is valid
         check_valid_box(list, int, int , int): Returns if value in 3x3 box
             is valid
-        soduku_solver(list, row, column): Recursively called function get
-            soduku solution
-        solve(): Starts and returns the resursive solution
-        print_sudoku(): Prints stored sudoku
-        print_solution(): Print solution as a grid format
+        draw(): Draws grid and grid features
+        draw_grid(): Draws the horizontal and vertical grid lines
+        draw_grid_features(): Draws the box values, select box and error box
+        draw_value(list, int, int, tuple): Draws colour value in specified box
+        draw_box(list, tuple): Draws colour box around specified box
+        move_select(position): Moves selection box
+        enter_value(key): Enters given key into current selected co-ords
+        reset_sudoku(): Resets the current sudoku
+        new_sudoku(): TODO - will generate another Sudoku
+        check_win(): Checks if current sudoku equals the solution
     """
 
     def __init__(self, sudoku, solved_sudoku):
@@ -40,7 +52,7 @@ class Sudoku_solver:
         pygame.init()
 
         # set window settings
-        logo = pygame.image.load("logo75x75.jpeg")
+        logo = pygame.image.load("src/logo75x75.jpeg")
         pygame.display.set_icon(logo)
         pygame.display.set_caption("Sudoku Solver")
 
@@ -74,7 +86,8 @@ class Sudoku_solver:
                     if event.key == pygame.K_SPACE:
                         self.select_box = [None, None]
                         self.current_sudoku = self.solve()
-                    if event.key in NUMBER_KEYS and self.select_box != [None, None]:
+                    if event.key in NUMBER_KEYS and \
+                            self.select_box != [None, None]:
                         self.enter_value(NUMBER_KEYS.index(event.key))
                         self.select_box = [None, None]
                     if event.key == pygame.K_r:
@@ -91,8 +104,9 @@ class Sudoku_solver:
                     pygame.quit()
                     quit()
 
-            self.draw() 
+            self.draw()
 
+        print("Victory!")
         close = True
         while(close):
             for event in pygame.event.get():
@@ -171,13 +185,21 @@ class Sudoku_solver:
                 line_width = 4
             else:
                 line_width = 2
-            pygame.draw.line(self.surface, self.BLACK, (line_pos, 0), (line_pos, SURFACE_SIZE), line_width)  # x line
-            pygame.draw.line(self.surface, self.BLACK, (0, line_pos), (SURFACE_SIZE, line_pos), line_width)  # y line
+            pygame.draw.line(self.surface, self.BLACK,
+                             (line_pos, 0), (line_pos, SURFACE_SIZE),
+                             line_width)  # x line
+            pygame.draw.line(self.surface, self.BLACK,
+                             (0, line_pos), (SURFACE_SIZE, line_pos),
+                             line_width)  # y line
 
         # draw bounding edges
         line_pos = (BOX_LENGTH * 9) - (line_width-1)
-        pygame.draw.line(self.surface, self.BLACK, (line_pos, 0), (line_pos, SURFACE_SIZE), 2*line_width)  # x boundary line
-        pygame.draw.line(self.surface, self.BLACK, (0, line_pos), (SURFACE_SIZE, line_pos), 2*line_width)  # y boundary line
+        pygame.draw.line(self.surface, self.BLACK,
+                         (line_pos, 0), (line_pos, SURFACE_SIZE),
+                         2*line_width)  # x boundary line
+        pygame.draw.line(self.surface, self.BLACK,
+                         (0, line_pos), (SURFACE_SIZE, line_pos),
+                         2*line_width)  # y boundary line
 
     def draw_grid_features(self):
         for row in range(9):  # defined size 9
@@ -191,7 +213,8 @@ class Sudoku_solver:
                     # draw current sudoku value
                     self.draw_value(self.current_sudoku, row, col, self.GREY)
 
-                if (self.current_sudoku[row][col] != self.solved_sudoku[row][col] and self.current_sudoku[row][col] != 0):
+                if (self.current_sudoku[row][col] != 0 and
+                        self.current_sudoku[row][col] != self.solved_sudoku[row][col]):
                     # draw incorrect box
                     self.draw_box([row, col], self.RED)
 
@@ -201,14 +224,20 @@ class Sudoku_solver:
 
     def draw_value(self, sudoku, row, col, value_colour):
         (text_width, text_height) = self.grid_font.size(str(sudoku[row][col]))
-        self.surface.blit(self.grid_font.render(str(sudoku[row][col]), 1, value_colour),
-                          (BOX_LENGTH*col + BOX_LENGTH/2 - text_width/2, BOX_LENGTH*row + BOX_LENGTH/2 - text_height/2))
+        self.surface.blit(self.grid_font.render(str(sudoku[row][col]),
+                          1, value_colour),
+                          (BOX_LENGTH*col + (BOX_LENGTH - text_width)/2,
+                          BOX_LENGTH*row + (BOX_LENGTH - text_height)/2))
 
     def draw_box(self, coords, border_colour):
-        pygame.draw.rect(self.surface, border_colour, pygame.Rect(coords[1] * BOX_LENGTH, coords[0] * BOX_LENGTH, BOX_LENGTH, BOX_LENGTH), width=4)
+        pygame.draw.rect(self.surface, border_colour,
+                         pygame.Rect(coords[1] * BOX_LENGTH,
+                                     coords[0] * BOX_LENGTH,
+                                     BOX_LENGTH, BOX_LENGTH), width=4)
 
     def move_select(self, position):
-        self.select_box = [int(position[1]//BOX_LENGTH), int(position[0]//BOX_LENGTH)]
+        self.select_box = [int(position[1]//BOX_LENGTH),
+                           int(position[0]//BOX_LENGTH)]
 
     def enter_value(self, key):
         if self.sudoku[self.select_box[0]][self.select_box[1]] == 0:

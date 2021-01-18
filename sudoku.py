@@ -1,5 +1,5 @@
 # *************************************************************************** #
-# Python class to store and solve a Sudoku, input as a string with empty grid #
+# Python class to store and solve a Sudoku, input as a string representation  #
 # *************************************************************************** #
 import sys
 import copy
