@@ -38,42 +38,37 @@ pip install -r requirements.txt
 Class to store and solve a Sudoku.
 Input parameter: String Sudoku with empty squares as 0 or . (Length === 81)
 Contains follow member methods:
-    create_grid(s): Returns 9x9 list from input string
-    create_string(): Return string from 9x9 solved sudoku
-    print_solution_string(): Returns solution as a string
-    check_valid_lines(list, int, int, int): Returns if value in row and
-        column is valid
-    check_valid_box(list, int, int , int): Returns if value in 3x3 box
-        is valid
-    soduku_solver(list, row, column): Recursively called function get
-        soduku solution
-    solve(): Starts and returns the resursive solution
-    print_sudoku(): Prints stored sudoku
-    print_solution(): Print solution as a grid format
+* create_grid(s): Returns 9x9 list from input string
+* create_string(): Return string from 9x9 solved sudoku
+* print_solution_string(): Returns solution as a string
+* check_valid_lines(list, int, int, int): Returns if value in row and column is valid
+* check_valid_box(list, int, int , int): Returns if value in 3x3 box is valid
+* soduku_solver(list, row, column): Recursively called function get soduku solution
+* solve(): Starts and returns the resursive solution
+* print_sudoku(): Prints stored sudoku
+* print_solution(): Print solution as a grid format
 
 ## GUI.py
 Class to display a pygame GUI for the backtracking Sudoku solver algorithm that you can play and automate (Brute forces)
-Input parameter: - Base Sudoku puzzle multi-dimensional list
-                 - Solved sudoku multi-dimensional list
+Input parameter:
+* Base Sudoku puzzle multi-dimensional list
+* Solved sudoku multi-dimensional list
 Contains follow member methods:
-    run(): Main (while) loop to run the Draw, Input and Solve of the program 
-    solve(): Starts and returns the resursive/backtracking solution
-    sudoku_solver(list, int, int): Recursively called function get
-        soduku solution
-    check_valid_lines(list, int, int, int): Returns if value in row and
-        column is valid
-    check_valid_box(list, int, int , int): Returns if value in 3x3 box
-        is valid
-    draw(): Draws grid and grid features
-    draw_grid(): Draws the horizontal and vertical grid lines
-    draw_grid_features(): Draws the box values, select box and error box
-    draw_value(list, int, int, tuple): Draws colour value in specified box
-    draw_box(list, tuple): Draws colour box around specified box
-    move_select(position): Moves selection box
-    enter_value(key): Enters given key into current selected co-ords
-    reset_sudoku(): Resets the current sudoku
-    new_sudoku(): TODO - will generate another Sudoku
-    check_win(): Checks if current sudoku equals the solution
+* run(): Main (while) loop to run the Draw, Input and Solve of the program 
+* solve(): Starts and returns the resursive/backtracking solution
+* sudoku_solver(list, int, int): Recursively called function get soduku solution
+* check_valid_lines(list, int, int, int): Returns if value in row and column is valid
+* check_valid_box(list, int, int , int): Returns if value in 3x3 box is valid
+* draw(): Draws grid and grid features
+* draw_grid(): Draws the horizontal and vertical grid lines
+* draw_grid_features(): Draws the box values, select box and error box
+* draw_value(list, int, int, tuple): Draws colour value in specified box
+* draw_box(list, tuple): Draws colour box around specified box
+* move_select(position): Moves selection box
+* enter_value(key): Enters given key into current selected co-ords
+* reset_sudoku(): Resets the current sudoku
+* new_sudoku(): TODO - will generate another Sudoku
+* check_win(): Checks if current sudoku equals the solution
 
 ## ToDo
 * Add generating new Sudoku feature
