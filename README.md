@@ -1,13 +1,15 @@
-﻿# SudokuSolver
-
-Sudoku solver supports being run on Python 3.8+ with the only requirement being the pygame library if requiring the GUI. Software will solve any Sudoku through a backtracking algorithm (Brute force), the Sudoku class requires a string input as a representation of the Sudoku, empty spaces should be replaced by 0 or .
+# SudokuSolver
+This project will solve any Sudoku through a backtracking algorithm (Brute force), the Sudoku class requires a string input as a representation of the Sudoku, empty spaces should be replaced by 0 or . The time complexity of this algorithm variables based on the depth and breadth of the possible values tree. The algorithm solves the sudoku almost instantly (see console) but is slowed down in the visualiser by the GUI.
+## Screenshots
+<p align="center">
+  <img src="https://github.com/JamesWingar/sudokuSolverVisualiser/blob/master/src/playing-sudoku.png" width="400">
+  <img src="https://github.com/JamesWingar/sudokuSolverVisualiser/blob/master/src/solving-sudoku.png" width="400">
+</p>
 
 ## Install
+Sudoku solver supports being run on Python 3.8+ with the pygame library as the only python module for the GUI. 
 Prerequisites
-* [git](https://git-scm.com/downloads)
-* [python3](https://www.python.org/download/releases/3.0/)
-* [pip](https://pypi.org/project/pip/)
-* [pygame](https://www.pygame.org/)
+* [git](https://git-scm.com/downloads)     [python3](https://www.python.org/download/releases/3.0/)     [pip](https://pypi.org/project/pip/)     [pygame](https://www.pygame.org/)
 
 To install follow the instructions below:
 1. Open a command line tool (eg. Linux -> Terminal, Windows -> Powershell)
@@ -27,7 +29,7 @@ pip install -r requirements.txt
 (*Note: you can use a virtual environment at step 6 to install the packages*)
 
 ## Usage
-* Run the python software by running the command:
+* Run the python software by the command:
 ```
 python main.py
 ```
@@ -79,6 +81,6 @@ Contains follow member methods:
 
 ## ToDo
 * Add generating new Sudoku feature
-* Add backspace to remove current values
+* Backspace to remove current values
+* Ability to create small indices numbers
 * Add ability to reset after algorithm has finished
-* Add victory screen
