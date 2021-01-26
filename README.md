@@ -1,6 +1,6 @@
 ﻿# SudokuSolver
 
-Sudoku solver supports being run on any Python environment (Tested python 3.8+) with the only requirement being the pygame library if requiring the GUI. Software will solve any Sudoku through a backtracking algorithm (Brute force), the Sudoku class requires a string input as a representation of the Sudoku, empty spaces should be replaced by 0 or .
+Sudoku solver supports being run on Python 3.8+ with the only requirement being the pygame library if requiring the GUI. Software will solve any Sudoku through a backtracking algorithm (Brute force), the Sudoku class requires a string input as a representation of the Sudoku, empty spaces should be replaced by 0 or .
 
 ## Install
 Prerequisites
@@ -12,12 +12,12 @@ Prerequisites
 To install follow the instructions below:
 1. Open a command line tool (eg. Linux -> Terminal, Windows -> Powershell)
 2. Install [git](https://git-scm.com/downloads)
-3. Change directory to where you want the MagicMirror using the `cd` command
+3. Change directory to where you want the foler using the `cd` command
 4. 
 ```python
-git clone https://github.com/JamesWingar/sudokuSolver
+git clone https://github.com/JamesWingar/sudokuSolverVisualiser
 ```
-5. Change directory to inside the directory `mirror_project`
+5. Change directory to inside the directory `sudokuSolverVisualiser`
 6. 
 ```python
 pip install -r requirements.txt
@@ -27,6 +27,10 @@ pip install -r requirements.txt
 (*Note: you can use a virtual environment at step 6 to install the packages*)
 
 ## Usage
+* Run the python software by running the command:
+```
+python main.py
+```
 * Green box is the select box, Red box states the value is wrong
 * Select a box and enter a number key to add value to the box
 * Enter 0 to remove the value
