@@ -14,7 +14,7 @@ Prerequisites
 To install follow the instructions below:
 1. Open a command line tool (eg. Linux -> Terminal, Windows -> Powershell)
 2. Install [git](https://git-scm.com/downloads)
-3. Change directory to where you want the foler using the `cd` command
+3. Change directory to where you want the folder using the `cd` command
 4. 
 ```python
 git clone https://github.com/JamesWingar/sudokuSolverVisualiser
